@@ -1,0 +1,87 @@
+<meta charset="utf-8">
+<h1>JavaScript: escopos, var, let e const</h1>
+<script>
+
+    /* 
+    *   'use strict' proibe:
+            with,
+            omissão das palavras-chave var/let/const
+            funções com parâmetros duplicados
+            muda o comportamento da palavra-chave "this"
+    */
+    'use strict';
+
+    var a = 888;
+    console.log(a); // imprime 888
+    if (true) {
+        var b = a;
+    }
+    console.log(b); // imprime 999
+
+    function teste() {
+        var c = a;
+        console.log('O c aqui existe: ', c); // imprime 999
+    }
+    teste();
+    // console.log('O c aqui não existe: ', c); // ReferenceError
+
+    // Variáveis com "let"
+    let c = 777;
+    if (true) {
+        let d = c;
+    }
+    // console.log(d); // ReferenceError
+
+    // looping com var
+    for (var e = 1; e <= 5; e++) {
+        console.log('e:', e);
+    }
+    console.log(e);
+
+    // looping com o let
+    for (let f = 1; f <= 5; f++) {
+        console.log('f: ', f);
+    }
+    // console.log(f); // ReferenceError
+
+    // Constantes
+    const x = 0;
+    // x = 2; // TypeError
+    const lista = [12, 'Roberto', true, 75.5];
+    console.table(lista);
+    lista.push('Adriana');
+    lista.shift();
+    console.table(lista);
+    lista[0] = 'Alguma coisa'; // Ok
+    // lista = [] // TypeError (constantes não podem ter valor reatribuído)
+
+    // Objetos
+    const pessoa = {
+        nome: 'Fabiana', // propriedade do objeto
+        sobrenome: 'Gomes',
+        idade: 48,
+        // método do objeto
+        dizerOla: function() {
+            console.log('Olá, pessoal!');
+        }
+    }
+
+    pessoa.dizerOla();
+    pessoa.nome = "Henrique"; // Alteração de propriedades OK
+    pessoa.cidade = "Barueri"; // Criação de propriedades OK
+    console.log('O nome da pessoa é: ', pessoa.nome);
+    console.log(pessoa);
+    // pessoa = {} // TypeError (reatribuição no objeto pessoa não é permitida)
+
+    {
+        function foo(a, b) {
+            console.log('Soma: ', a + b);
+        }
+
+        window.foo = foo; // exporta uma função local para o escopo global
+    }
+        
+    foo(5, 7);
+    
+
+</script>

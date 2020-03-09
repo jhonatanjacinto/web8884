@@ -1,0 +1,54 @@
+<meta charset="utf-8">
+<h1>JavaScript: querySelector e querySelectorAll</h1>
+<style>
+    p {
+        background-color: #f2f2f2;
+        border: 1px solid #ddd;
+        padding: 15px;
+    }
+    p.vermelho {
+        background-color: #fff0f0;
+        border-color: red;
+        color: red;
+    }
+</style>
+
+<p>Parágrafo 1</p>
+<p class="vermelho">Parágrafo 2</p>
+<p>Parágrafo 3</p>
+<p>Parágrafo 4</p>
+<p class="vermelho">Parágrafo 5</p>
+<p class="vermelho">Parágrafo 6</p>
+<p>Parágrafo 7</p>
+<p>Parágrafo 8</p>
+<p>Parágrafo 9</p>
+<p id="p10">Parágrafo 10</p>
+
+<script>
+
+    // document.querySelector('#p10').textContent = 'Mudei o parágrafo 10';
+    // document.querySelector('#p10').style.fontStyle = 'italic';
+    const p10 = document.querySelector('#p10');
+    p10.textContent = 'Mudei o parágrafo usando a referencia do objeto';
+    p10.style.fontStyle = 'italic';
+
+    // Alterar os parágrafos vermelhos
+    const vermelhos = document.querySelectorAll('.vermelho');
+    for (let i = 0; i < vermelhos.length; i++)
+    {
+        vermelhos[i].textContent = 'Vermelho alterado pelo JS...';
+    }
+
+    // forEach(): percorre os itens de um Array, NodeList, etc.
+    vermelhos.forEach(function(paragrafo) {
+        paragrafo.textContent = 'Parágrafo alterado de novo com forEach';
+    });
+
+    // ES6+ (Arrow Functions)
+    vermelhos.forEach((paragrafo) => {
+        paragrafo.textContent = 'Parágrafo alterado com Arrow Function';
+    });
+    vermelhos.forEach(paragrafo => paragrafo.textContent = 'Parágrafo alterado....');
+
+
+</script>
