@@ -1,0 +1,10 @@
+1) Crie uma constante chamada "badge" e guarde a referência do elemento com classe '.badge-info'
+2) A propriedade "itens" da constante "json" é um Array com as informações retornadas da API. Percorra os itens desse Array
+usando um "forEach" e para cada ITEM retornado chame o método "adicionarLinha" do módulo "moduloTabela" passando somente o valor
+da propriedade "conteudo"
+3) Chame o método "mostraOuEsconde" do "moduloTabela"
+4) Remova a classe "d-none" do elemento "badge"
+5) Crie uma constante chamada "linhas" que receberá o Array retornado pelo método "getLinhas" do "moduloTabela"
+6) SE a propriedade "status" do objeto "json" for igual a 1, mostre no console a mensagem "Operação realizada com sucesso"
+7) Fora da condição anterior, adicione a classe "d-none" ao elemento "badge"
+8) Remova o comentário da chamada para a função "getItens()" para que ela seja executada assim que a página for carregada

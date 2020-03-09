@@ -1,0 +1,57 @@
+1) Crie uma constante chamada "moduloTabela" que irá representar todo o módulo que controla a tabela; ela guardará o objeto retornado da IIFE (como referência, veja o exemplo do arquivo "sync.js")
+2) Dentro da IIFE adicione o comando 'use strict'
+3) Crie uma constante chamada "alertTabela" e guarde nela a referência do elemento com id "alertaTabela"
+4) Crie uma constante chamada "tabela" e guarde nela a referência do elemento com id "tabela"
+5) Adicione ao objeto "tabela" um evento "click"
+6) Dentro da função que é executada pelo evento, pegue o alvo do evento e verifique se ele TEM A CLASSE "btn-remover" e guarde o valor (true/false) numa variável chamada "isRemover". Aqui usaremove EVENT DELEGATION pois apesar do click estar na tabela toda executaremos a função somente se QUEM FOI CLICADO NA TABELA foi o botão de remoção de informações
+7) SE o valor de "isRemover" for "true", então pegue o alvo do evento e remova o elemento <TR> ancestral dele
+8) Chame a função "mostraOuEscondeTabela" que criaremos mais à frente
+9) Fora do evento "click" da tabela, crie uma função sem parâmetros chamada "getTodasLinhas"
+10) Dentro dela, crie uma constante chamada "trs" e guarde nela a lista de todos os elementos <tr> que estão na tag <tbody> da tabela (o seletor seria "tbody tr")
+11) Em seguida, crie uma constante chamada "linhas" e guarde nela o resultado do comando abaixo:
+    
+        Array.from(trs).map( elemento => {
+            return { conteudo: elemento.querySelector('td:first-child').textContent }
+        });
+
+        Explicação: o comando acima percorre todos os elementos <TR> que o JS achou na tabela, transforma num array e mapeia
+        cada um deles para um objeto tendo uma propriedade chamada "conteudo" com o texto presente no primeiro-filho "<td>"
+        das linhas da tabela.
+
+12) Em seguida insira o comando "return linhas;" para que a nova lista seja retornada
+13) Fora da função anterior, crie uma nova função chamada "mostraOuEscondeTabela"
+14) Dentro dela crie uma constante chamada "linhas" que receberá o array retornado da função "getTodasLinhas"
+15) SE a quantidade de itens no objeto "linhas" (que é um Array) for igual a 0, então remova a classe "d-none" do objeto "alertTabela" e em seguida adicione ao objeto "tabela" a classe "d-none"
+16) CASO CONTRÁRIO faça o inverso, adicione a classe "d-none" ao objeto "alertTabela" e remove a classe "d-none" do objeto "tabela"
+
+TESTE A REMOÇÃO DE LINHAS NA TABELA
+
+17) Crie uma função chamada "addNovaLinha" com um parâmetro chamado "conteudo"
+18) Dentro dela, crie uma variável chamada linha e guarde a string abaixo nela:
+
+        `<tr>
+            <td>${conteudo}</td>
+            <td>
+                <button class="btn btn-danger btn-remover">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </td>
+        </tr>`
+
+        Explicação: Estamos gerando em memória um novo elemento <TR> com o conteúdo passado para a função que em seguida será adicionado à tabela no HTML
+
+19) Peça para o JS procurar dentro da tabela um elemento "<tbody>" e usando o operador "+=" jogue na propriedade innerHTML dele o valor da variável "linha". Esse comando fará com que ele adicione linhas na tabela consecutivamente.
+20) Em seguida, chame a função "mostraOuEscondeTabela"
+21) Antes do fechamento da IIFE do "moduloTabela", adicione o seguinte código:
+
+        return {
+            adicionarLinha : addNovaLinha,
+            getLinhas : getTodasLinhas,
+            mostraOuEsconde : mostraOuEscondeTabela
+        }
+
+        Explicação: este comando irá expor os métodos/funções do nosso módulo que serão públicos
+
+FAÇA OS PASSOS 22 e 23 SOMENTE DEPOIS QUE FIZER O MÓDULO SYNC
+22) Dentro da função "addNovaLinha", depois da chamada da função "mostraOuEscondeTabela", chame o método "sincronizar" do "moduloSync"
+23) Faça o mesmo dentro da função que realiza a remoção de itens da tabela.
