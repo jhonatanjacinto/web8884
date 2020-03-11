@@ -1,0 +1,43 @@
+<meta charset="utf-8">
+<h1>Carregar dados do CEP digitado</h1>
+<b>CEP:</b><br>
+<input type="text" id="campoCep" maxlength="8">
+<button id="btnBuscar">
+    Buscar
+</button>
+<div id="conteudoEndereco">
+    <!-- Mostrar dados do endereço dentro dessa DIV -->
+</div>
+<hr>
+<iframe width="700" height="450" style="border: none;" src="" id="mapa"></iframe>
+<script>
+
+    const btn = document.querySelector('#btnBuscar');
+    const div = document.querySelector('#conteudoEndereco');
+    const campo = document.querySelector('#campoCep');
+
+    btn.onclick = async () => {
+        if (campo.value.trim() === '') {
+            alert('Por favor, digite um cep');
+            campo.focus();
+        }
+        else {
+            const resposta = await fetch(`https://viacep.com.br/ws/${campo.value}/json`);
+            const dadosEndereco = await resposta.json();
+            console.log(dadosEndereco);
+            let {logradouro: endereco, localidade: cidade, uf, bairro} = dadosEndereco;
+            div.innerHTML = `
+                ${endereco}<br>
+                ${bairro}<br>
+                ${cidade} <br>
+                ${uf}
+            `;
+
+            let url = 'https://www.google.com/maps/embed/v1/place?key=AIzaSyAAHU25u6912rHIn4Kv4Rh77pk8a5mUjFo';
+            let parametro = `&q=${endereco},${bairro},${cidade}`;
+            const iframeMapa = document.querySelector('#mapa');
+            iframeMapa.src = url + parametro; 
+        }
+    }
+
+</script>

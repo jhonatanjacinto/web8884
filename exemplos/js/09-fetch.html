@@ -1,0 +1,27 @@
+<meta charset="utf-8">
+<h1>AJAX com Fetch API</h1>
+<button id="btnCarregar">
+    Carregar Conteúdo
+</button>
+<div id="conteudoCarregado">
+    Seu conteúdo será carregado aqui...
+</div>
+
+<script>
+
+    const btn = document.querySelector('#btnCarregar');
+    const div = document.querySelector('#conteudoCarregado');
+    btn.onclick = () => {
+        fetch('http://caelum.jhonatanjacinto.dev/teste.php')
+        .then(resposta => resposta.text())
+        .then(respostaEmTexto => {
+            div.innerHTML = respostaEmTexto;
+            alert('Dados carregados!!!');
+        })
+        .catch(erro => {
+            alert('Deu ruim!!!');
+            console.error(erro);
+        });
+    }
+
+</script>

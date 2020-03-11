@@ -1,0 +1,28 @@
+<meta charset="utf-8">
+<h1>AJAX com Fetch API + Async/Await</h1>
+<button id="btnCarregar">
+    Carregar Conteúdo
+</button>
+<div id="conteudoCarregado">
+    Seu conteúdo será carregado aqui...
+</div>
+
+<script>
+
+    const btn = document.querySelector('#btnCarregar');
+    const div = document.querySelector('#conteudoCarregado');
+    btn.onclick = async () => {
+        try {
+            div.textContent = 'Carregando...';
+            const resposta = await fetch('http://caelum.jhonatanjacinto.dev/teste.php');
+            const conteudoEmTexto = await resposta.text();
+            div.innerHTML = conteudoEmTexto;
+            alert('Dados carregados!');
+        }
+        catch(erro) {
+            console.error(erro);
+            alert('Deu ruim!');
+        }
+    }
+
+</script>

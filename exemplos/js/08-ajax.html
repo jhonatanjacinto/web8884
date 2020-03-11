@@ -1,0 +1,34 @@
+<meta charset="utf-8">
+<h1>AJAX com JavaScript</h1>
+<button id="btnCarregar">
+    Carregar Conteúdo
+</button>
+<button onclick="alert('Testando')">Teste</button>
+<div id="conteudoCarregado">
+    Seu conteúdo será carregado aqui...
+</div>
+
+<script>
+
+    const btn = document.querySelector('#btnCarregar');
+    const div = document.querySelector('#conteudoCarregado');
+    btn.onclick = () => {
+        const ajax = new XMLHttpRequest();
+        ajax.open('GET', 'http://sdflkgasldfkja', true);
+        ajax.send();
+
+        // funções callback
+        ajax.addEventListener('load', () => {
+            div.innerHTML = ajax.response;
+            alert('Os dados chegaram...');
+        });
+
+        ajax.addEventListener('error', (erro) => {
+            alert('Deu ruim!!!');
+            console.error(erro);
+        });
+        
+        console.log('Mensagem exibida depois que a requisição foi respondida!');
+    }
+
+</script>

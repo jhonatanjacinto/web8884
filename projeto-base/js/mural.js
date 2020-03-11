@@ -41,13 +41,15 @@ const moduloMural = (function() {
     /**
      * Função que cria cartões no Mural
      * @param {string} conteudo Conteúdo que será adicionado no Cartão
+     * @param {string} cor Cor a ser aplicada como fundo do cartão
      * @returns {void}
      */
     let numeroCartao = 0;
-    function adicionarCartao(conteudo)
+    function adicionarCartao(conteudo, cor = '')
     {
         numeroCartao++;
         const cartao = document.createElement('article');
+        cartao.style.backgroundColor = cor;
         cartao.classList.add('cartao');
         cartao.tabIndex = 0;
         cartao.innerHTML = templateCartao.replace('{{CONTEUDO_CARTAO}}', conteudo).replace(/{{NUMERO_CARTAO}}/g, numeroCartao);
