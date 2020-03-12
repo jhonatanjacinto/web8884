@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
+<script src="../../exemplos/jquery/jquery.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 <div class="container">
     <h1 class="display-4 mb-3 mt-3">Comentários dos Posts | Blog</h1>
     <table class="table table-striped mb-5">
@@ -41,15 +42,103 @@
             </tr>
         </tfoot>
     </table>
-
-    <ul class="comentarios list-group mb-5">
-        <!-- Exibir aqui a lista de comentários do POST -->
-    </ul>
 </div>
+
+<div class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Comentários</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <ul class="comentarios list-group mb-5">
+                <!-- Exibir aqui a lista de comentários do POST -->
+            </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <script>
 
     // Insira a lógica necessária aqui
+    const tbodyPosts = document.querySelector('tbody');
+    const ulComentarios = document.querySelector('.comentarios');
+    const paginador = document.querySelector('#paginador');
+    const quantidade = document.querySelector('#quantidade');
 
+    quantidade.onchange = () => {
+        let qtd = quantidade.value;
+        let numeroPaginas = Math.ceil(100 / qtd);
+        paginador.innerHTML = '';
+
+        for (let i = 1; i <= numeroPaginas; i++)
+        {
+            const opcao = document.createElement('option');
+            opcao.value = i;
+            opcao.textContent = i;
+            paginador.append(opcao);
+        }
+
+        carregarPosts();
+    }
+
+    paginador.onchange = () => {
+        let pagina = paginador.value;
+        carregarPosts(pagina);
+    }
+
+    tbodyPosts.onclick = async event => {
+        // se o botão "ver comentários" foi clicado...
+        if (event.target.classList.contains('btn-ver')) {
+            let postId = event.target.dataset.postid; // propriedade data-postid do botão
+            ulComentarios.innerHTML = 'Carregando...';
+            const resposta = await fetch(`https://caelum.jhonatanjacinto.dev/wd47/api/comentarios.php?id=${postId}`);
+            const listaDeComentarios = await resposta.json();
+            console.log(listaDeComentarios);
+
+            ulComentarios.innerHTML = '';
+            listaDeComentarios.forEach(comentario => {
+                const li = document.createElement('li');
+                li.classList.add('list-group-item', 'mb-3');
+                li.innerHTML = `
+                    <em>${comentario.email.toLowerCase()}</em> comentário: <br>
+                    <hr>
+                    <strong>${comentario.name.toUpperCase()}</strong><br>
+                    ${comentario.body}
+                `;
+                ulComentarios.append(li);
+            });
+            // window.scrollTo({ top: ulComentarios.offsetTop, behavior: 'smooth' });
+            $('.modal').modal('show');
+        }
+    }
+
+    carregarPosts();
+    async function carregarPosts(pagina = 1) {
+        let limit = quantidade.value;
+        let start = (pagina - 1) * limit;
+        tbodyPosts.innerHTML = '';
+        const resposta = await fetch(`https://caelum.jhonatanjacinto.dev/wd47/api/posts.php?start=${start}&limit=${limit}`);
+        const listaDePosts = await resposta.json();
+        console.log(listaDePosts);
+
+        listaDePosts.forEach(post => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${post.id}</td>
+                <td>${post.title}</td>
+                <td>
+                    <button data-postid="${post.id}" class="btn-ver btn btn-primary">
+                        Ver comentários
+                    </button>
+                </td>
+            `;
+            tbodyPosts.append(tr);
+        })
+    }
 
 </script>

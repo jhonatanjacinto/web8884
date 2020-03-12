@@ -9,7 +9,10 @@ const moduloMural = (function() {
             // se tem a classe, então é o botão de remoção
             const cartao = event.target.parentElement.parentElement;
             cartao.classList.add('cartao--some');
-            cartao.addEventListener('transitionend', () => cartao.remove());
+            cartao.addEventListener('transitionend', () => {
+                cartao.remove();
+                moduloSync.sincronizar();
+            });
         }
     });
 
@@ -17,6 +20,7 @@ const moduloMural = (function() {
     mural.addEventListener('change', event => {
         const cartao = event.target.parentElement.parentElement;
         cartao.style.backgroundColor = event.target.value;
+        moduloSync.sincronizar();
     });
 
     // Mudança de cor do cartão via teclado
@@ -56,11 +60,38 @@ const moduloMural = (function() {
         mural.append(cartao);
     }
 
+    /**
+     * Retorna uma lista de objetos contendo o conteúdo e a cor de cada cartão
+     * @returns {Array<Object>}
+     */
+    function getCartoes()
+    {
+        const cartoes = mural.querySelectorAll('.cartao');
+        const listaCartoes = Array.from(cartoes).map(cartao => {
+            return {
+                conteudo: cartao.querySelector('.cartao-conteudo').textContent,
+                cor: cartao.style.backgroundColor
+            };
+        });
+        // console.log(listaCartoes);
+        return listaCartoes;
+    }
+
+    // AJAX na sintaxe do jQuery
+    let urlGet = 'https://ceep.herokuapp.com/cartoes/carregar';
+    $.get(urlGet, { usuario: 'jhonatan.jacinto@caelum.com.br' }, (dadosServidor) => {
+        console.log(dadosServidor);
+        dadosServidor.cartoes.forEach(cartao => {
+            adicionarCartao(cartao.conteudo, cartao.cor);
+        });
+    }, 'jsonp' );
+
     // retornar um objeto com tudo o que 
     // deve ser público (acessível) deste módulo em questão
     return {
         mudarLayout,
-        adicionarCartao
+        adicionarCartao,
+        getCartoes
     }
 
 })();

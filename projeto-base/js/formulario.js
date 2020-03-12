@@ -12,6 +12,7 @@
         else {
             // cria um cartão novo no mural
             moduloMural.adicionarCartao(campoTexto.value);
+            moduloSync.sincronizar();
             campoTexto.value = '';
         }
     });
